@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products Management - Tap Receipt</title>
+  <meta name="description" content="Manage inventory, prices, categories and stock levels in Tap Receipt.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .category-pills {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .category-filter-btn {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .category-filter-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .category-filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body data-page="products">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-title">Tap<span>Receipt</span></div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link"><span>🏠</span> Dashboard</a></li>
+        <li><a href="receipt.html" class="nav-link"><span>🧾</span> Billing</a></li>
+        <li><a href="products.html" class="nav-link active"><span>📦</span> Products</a></li>
+        <li><a href="reports.html" class="nav-link"><span>📊</span> Reports</a></li>
+        <li><a href="history.html" class="nav-link"><span>📜</span> History</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="shop-chip">
+          <span class="status-dot"></span>
+          <span id="nav-shop-name" class="shop-chip-name">QuickMart Superstore</span>
+        </div>
+        <button type="button" id="btn-logout" class="btn btn-secondary btn-sm" title="Log Out">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Product Catalog & Inventory</h1>
+        <p class="page-subtitle">Add, edit, track stock, and organize items for instant billing lookups</p>
+      </div>
+      <div>
+        <button type="button" id="btn-open-add-product" class="btn btn-primary">
+          <span>➕</span> Add New Product
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters and Search Toolbar -->
+    <div class="filter-bar">
+      <!-- Search Input -->
+      <div style="flex: 1; max-width: 360px; min-width: 240px;">
+        <input 
+          type="text" 
+          id="product-search" 
+          class="form-input" 
+          placeholder="🔍 Search products by name or category..."
+        >
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-pills">
+        <button type="button" class="category-filter-btn active" data-category="all">All Items</button>
+        <button type="button" class="category-filter-btn" data-category="Dairy">Dairy</button>
+        <button type="button" class="category-filter-btn" data-category="Bakery">Bakery</button>
+        <button type="button" class="category-filter-btn" data-category="Beverages">Beverages</button>
+        <button type="button" class="category-filter-btn" data-category="Snacks">Snacks</button>
+        <button type="button" class="category-filter-btn" data-category="Groceries">Groceries</button>
+        <button type="button" class="category-filter-btn" data-category="Personal Care">Personal Care</button>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">#</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Unit Price (₹)</th>
+              <th>Stock Status</th>
+              <th style="width: 160px; text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-dim); padding: 2rem;">
+                Loading products catalog...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Add / Edit Product Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-product-title">Add New Product</h3>
+        <button type="button" class="modal-close" id="modal-product-close">&times;</button>
+      </div>
+
+      <form id="product-form">
+        <input type="hidden" id="product-id">
+
+        <div class="form-group">
+          <label for="product-name" class="form-label">Product Name *</label>
+          <input 
+            type="text" 
+            id="product-name" 
+            class="form-input" 
+            placeholder="e.g. Masala Oats (500g)" 
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="product-price" class="form-label">Price per Unit (₹) *</label>
+            <input 
+              type="number" 
+              id="product-price" 
+              class="form-input" 
+              placeholder="e.g. 85.00" 
+              step="0.5" 
+              min="0" 
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="product-stock" class="form-label">Initial Stock *</label>
+            <input 
+              type="number" 
+              id="product-stock" 
+              class="form-input" 
+              placeholder="e.g. 50" 
+              min="0" 
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="product-category" class="form-label">Category</label>
+          <input 
+            type="text" 
+            id="product-category" 
+            class="form-input" 
+            placeholder="e.g. Groceries, Snacks, Dairy" 
+            list="category-suggestions"
+          >
+          <datalist id="category-suggestions">
+            <option value="Dairy">
+            <option value="Bakery">
+            <option value="Beverages">
+            <option value="Snacks">
+            <option value="Groceries">
+            <option value="Personal Care">
+            <option value="General">
+          </datalist>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('product-modal').classList.remove('active')">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span>💾</span> Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>

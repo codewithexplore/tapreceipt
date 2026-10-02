@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt History - Tap Receipt</title>
+  <meta name="description" content="View, search, reprint and resend saved digital receipts via WhatsApp.">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body data-page="history">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-title">Tap<span>Receipt</span></div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link"><span>🏠</span> Dashboard</a></li>
+        <li><a href="receipt.html" class="nav-link"><span>🧾</span> Billing</a></li>
+        <li><a href="products.html" class="nav-link"><span>📦</span> Products</a></li>
+        <li><a href="reports.html" class="nav-link"><span>📊</span> Reports</a></li>
+        <li><a href="history.html" class="nav-link active"><span>📜</span> History</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="shop-chip">
+          <span class="status-dot"></span>
+          <span id="nav-shop-name" class="shop-chip-name">QuickMart Superstore</span>
+        </div>
+        <button type="button" id="btn-logout" class="btn btn-secondary btn-sm" title="Log Out">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Receipts History & Archives</h1>
+        <p class="page-subtitle">Search, reprint, inspect itemized slips, and re-send bills to customer WhatsApp</p>
+      </div>
+      <div>
+        <a href="receipt.html" class="btn btn-primary">
+          <span>➕</span> New Bill
+        </a>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; justify-content: space-between;">
+      <div style="flex: 1; max-width: 380px; min-width: 240px;">
+        <input 
+          type="text" 
+          id="history-search" 
+          class="form-input" 
+          placeholder="🔍 Search by phone, receipt number, or name..."
+        >
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <label for="history-filter-mode" style="font-size: 0.85rem; color: var(--text-muted);">Payment Mode:</label>
+        <select id="history-filter-mode" class="form-select" style="width: 140px;">
+          <option value="ALL">All Modes</option>
+          <option value="Cash">Cash</option>
+          <option value="UPI">UPI</option>
+          <option value="Card">Card</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Receipts Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Receipt #</th>
+              <th>Date & Time</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Payment Mode</th>
+              <th>Total Amount (₹)</th>
+              <th style="width: 260px; text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 2rem;">
+                Loading receipts history...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- View Receipt Slip Modal -->
+  <div class="modal-overlay" id="history-modal">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Receipt Details</h3>
+        <button type="button" class="modal-close" id="history-modal-close">&times;</button>
+      </div>
+
+      <div id="history-modal-preview"></div>
+
+      <div class="modal-actions" style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center;">
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+          <span>🖨️</span> Thermal Print
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('history-modal').classList.remove('active')">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>

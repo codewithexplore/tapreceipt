@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Reports & Analytics - Tap Receipt</title>
+  <meta name="description" content="Daily, monthly, and overall sales analytics and top selling products report.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .reports-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 992px) {
+      .reports-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-page="reports">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-title">Tap<span>Receipt</span></div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link"><span>🏠</span> Dashboard</a></li>
+        <li><a href="receipt.html" class="nav-link"><span>🧾</span> Billing</a></li>
+        <li><a href="products.html" class="nav-link"><span>📦</span> Products</a></li>
+        <li><a href="reports.html" class="nav-link active"><span>📊</span> Reports</a></li>
+        <li><a href="history.html" class="nav-link"><span>📜</span> History</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="shop-chip">
+          <span class="status-dot"></span>
+          <span id="nav-shop-name" class="shop-chip-name">QuickMart Superstore</span>
+        </div>
+        <button type="button" id="btn-logout" class="btn btn-secondary btn-sm" title="Log Out">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Sales Analytics & Reports</h1>
+        <p class="page-subtitle">Track revenue milestones, item volume, and customer payment methods</p>
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" onclick="window.print()">
+          <span>🖨️</span> Print Summary Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary KPI Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon emerald">💵</div>
+        <div>
+          <div class="stat-label">Total Cumulative Sales</div>
+          <div class="stat-value" id="report-total-sales">₹0.00</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon indigo">🧾</div>
+        <div>
+          <div class="stat-label">Total Receipts Issued</div>
+          <div class="stat-value" id="report-total-receipts">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon cyan">📅</div>
+        <div>
+          <div class="stat-label">Today's Sales Summary</div>
+          <div class="stat-value" id="report-today-sales">₹0.00</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon amber">📊</div>
+        <div>
+          <div class="stat-label">This Month's Sales</div>
+          <div class="stat-value" id="report-month-sales">₹0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics Visual Grid -->
+    <div class="reports-grid">
+      
+      <!-- 7-Day Revenue Trend Chart -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span>📈</span> 7-Day Sales Performance</h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Daily Trends</span>
+        </div>
+        
+        <div style="padding: 1.5rem 0.5rem 0.5rem 0.5rem;">
+          <div id="trend-bars-container" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 0.5rem; height: 160px;">
+            <div style="text-align: center; color: var(--text-dim); width: 100%;">
+              Loading sales trend graph...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Modes Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span>💳</span> Payment Modes Split</h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Cash / UPI / Card</span>
+        </div>
+
+        <div style="padding: 0.5rem 0;" id="payment-breakdown-bars">
+          <div style="text-align: center; color: var(--text-dim); padding: 1.5rem;">
+            Loading payment ratios...
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; font-size: 0.88rem;">
+          <span style="color: var(--text-muted);">Avg. Ticket Size:</span>
+          <strong id="report-avg-order" style="color: var(--primary);">₹0.00</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Top Selling Items Table -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title"><span>🏆</span> Top Selling Products</h2>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Ranked by Quantity Sold</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">Rank</th>
+              <th>Product / Item Description</th>
+              <th>Total Units Sold</th>
+              <th>Total Revenue Generated (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="top-items-tbody">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 2rem;">
+                Loading top selling products...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast-container"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
