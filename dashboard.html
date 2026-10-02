@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Tap Receipt</title>
+  <meta name="description" content="Tap Receipt shopkeeper dashboard - Hub for billing, products, and reports.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="dashboard">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-title">Tap<span>Receipt</span></div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link active"><span>🏠</span> Dashboard</a></li>
+        <li><a href="receipt.html" class="nav-link"><span>🧾</span> Billing</a></li>
+        <li><a href="products.html" class="nav-link"><span>📦</span> Products</a></li>
+        <li><a href="reports.html" class="nav-link"><span>📊</span> Reports</a></li>
+        <li><a href="history.html" class="nav-link"><span>📜</span> History</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="shop-chip">
+          <span class="status-dot"></span>
+          <span id="nav-shop-name" class="shop-chip-name">QuickMart Superstore</span>
+        </div>
+        <button type="button" id="btn-logout" class="btn btn-secondary btn-sm" title="Log Out">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Welcome Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Welcome back, <span id="dash-shop-name" style="color: var(--primary);">Shopkeeper</span>! 👋</h1>
+        <p class="page-subtitle">Here is the live pulse of your store transactions, inventory, and quick actions.</p>
+      </div>
+      <div>
+        <a href="receipt.html" class="btn btn-primary btn-lg">
+          <span>➕</span> New Billing / Receipt
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Metric KPI Strip -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon emerald">💰</div>
+        <div>
+          <div class="stat-label">Today's Sales</div>
+          <div class="stat-value" id="stat-today-sales">₹0.00</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon indigo">🧾</div>
+        <div>
+          <div class="stat-label">Today's Receipts</div>
+          <div class="stat-value" id="stat-today-receipts">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon cyan">📦</div>
+        <div>
+          <div class="stat-label">Products in Stock</div>
+          <div class="stat-value" id="stat-product-count">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon amber">📈</div>
+        <div>
+          <div class="stat-label">Monthly Revenue</div>
+          <div class="stat-value" id="stat-month-sales">₹0.00</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon purple">🏷️</div>
+        <div>
+          <div class="stat-label">Avg. Bill Value</div>
+          <div class="stat-value" id="stat-avg-bill">₹0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Prominent Hub Action Cards -->
+    <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: #fff; margin-bottom: 1.25rem;">
+      Quick Management Hub
+    </h2>
+
+    <div class="hub-grid">
+
+      <!-- Hub Card 1: Products Management -->
+      <div class="hub-card hub-products">
+        <div>
+          <div class="hub-icon-wrapper">📦</div>
+          <h3 class="hub-title">Products Management</h3>
+          <p class="hub-desc">
+            Organize catalog inventory, update item prices, track real-time stock levels, and categorize goods for lightning-fast checkout.
+          </p>
+        </div>
+        <div class="hub-action">
+          <a href="products.html" class="btn btn-secondary btn-block">
+            <span>⚙️</span> Manage Products & Stock →
+          </a>
+        </div>
+      </div>
+
+      <!-- Hub Card 2: Sales Reports -->
+      <div class="hub-card hub-reports">
+        <div>
+          <div class="hub-icon-wrapper">📊</div>
+          <h3 class="hub-title">Sales Reports & Analytics</h3>
+          <p class="hub-desc">
+            Analyze daily and monthly store revenue, view top-selling items, inspect payment channel ratios, and download business summaries.
+          </p>
+        </div>
+        <div class="hub-action">
+          <a href="reports.html" class="btn btn-secondary btn-block">
+            <span>📈</span> View Sales Insights →
+          </a>
+        </div>
+      </div>
+
+      <!-- Hub Card 3: Create Receipt / Billing (Prominent / Highlighted) -->
+      <div class="hub-card hub-billing">
+        <div>
+          <div class="hub-icon-wrapper">🧾</div>
+          <h3 class="hub-title">Create Receipt / Billing</h3>
+          <p class="hub-desc">
+            Launch the high-speed POS billing terminal. Add products, auto-calculate tax/discounts, generate on-screen QR codes, and send bills directly to customer WhatsApp!
+          </p>
+        </div>
+        <div class="hub-action">
+          <a href="receipt.html" class="btn btn-primary btn-block btn-lg">
+            <span>⚡</span> Open Billing Terminal →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent Receipts Table Feed -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title"><span>🕒</span> Recent Receipts Issued</h2>
+        <a href="history.html" class="btn btn-secondary btn-sm">
+          View All History →
+        </a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Receipt #</th>
+              <th>Time</th>
+              <th>Customer Phone</th>
+              <th>Payment Mode</th>
+              <th>Total Amount</th>
+            </tr>
+          </thead>
+          <tbody id="recent-receipts-tbody">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-dim); padding: 1.5rem;">
+                Loading transactions...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast-container"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
